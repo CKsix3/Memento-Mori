@@ -84,14 +84,20 @@
     overflow: hidden;
   }
   .week-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 2px;
+    position: relative;
     height: 18px;
-    align-items: center;
+    margin-bottom: 2px;
   }
-  .wh {
+  .wh-1 {
+    position: absolute;
+    left: 0;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    color: #bbb;
+  }
+  .wh-52 {
+    position: absolute;
+    right: 0;
     font-family: 'Cinzel', serif;
     font-size: 9px;
     color: #bbb;
@@ -146,8 +152,8 @@
   </div>
   <div class="right-col">
     <div class="week-header">
-      <span class="wh">1</span>
-      <span class="wh">52</span>
+      <span class="wh-1">1</span>
+      <span class="wh-52">52</span>
     </div>
     <div class="grid" id="grid"></div>
   </div>
@@ -194,6 +200,7 @@
     yearNums.innerHTML = '';
     grid.innerHTML = '';
     const rowH = CELL + 2;
+    yearsLabel.style.height = (YEARS * rowH) + 'px';
     for (let y = 0; y < YEARS; y++) {
       const label = y;
       const show = label === 0 || label % 5 === 0 || label === YEARS - 1;
