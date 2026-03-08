@@ -80,6 +80,7 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+    overflow: hidden;
   }
   .week-header {
     display: flex;
@@ -180,7 +181,7 @@
     }, 800);
   }
   function getCellSize() {
-    const available = window.innerWidth - 12*2 - 20 - 3 - 10 - 4;
+    const available = window.innerWidth - 12*2 - 20 - 6 - 10 - 8;
     const size = Math.floor((available - (WEEKS - 1) * 2) / WEEKS);
     return Math.max(4, Math.min(size, 11));
   }
