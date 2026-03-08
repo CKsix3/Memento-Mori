@@ -44,7 +44,7 @@
   .left-col {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch;
     flex-shrink: 0;
     margin-right: 4px;
   }
@@ -59,7 +59,7 @@
     align-items: center;
     justify-content: center;
     margin-right: 3px;
-    padding-top: 20px;
+    align-self: stretch;
   }
   .year-nums {
     display: flex;
@@ -80,6 +80,7 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+    min-width: 0;
     overflow: hidden;
   }
   .week-header {
@@ -193,7 +194,6 @@
     yearNums.innerHTML = '';
     grid.innerHTML = '';
     const rowH = CELL + 2;
-    yearsLabel.style.height = (YEARS * rowH) + 'px';
     for (let y = 0; y < YEARS; y++) {
       const label = y;
       const show = label === 0 || label % 5 === 0 || label === YEARS - 1;
