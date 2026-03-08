@@ -8,6 +8,7 @@
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;1,400&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
+    overflow-x: hidden;
     background: #f5f0e8;
     display: flex;
     flex-direction: column;
@@ -58,12 +59,12 @@
     align-items: center;
     justify-content: center;
     margin-right: 3px;
-    padding-top: 20px; /* offset for week header */
+    padding-top: 20px;
   }
   .year-nums {
     display: flex;
     flex-direction: column;
-    padding-top: 20px; /* offset for week header */
+    padding-top: 20px;
   }
   .yn {
     font-family: 'Cinzel', serif;
@@ -112,9 +113,7 @@
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
-  .cell.filled {
-    background: #1a1a1a;
-  }
+  .cell.filled { background: #1a1a1a; }
   .quote {
     font-style: italic;
     font-size: 12px;
@@ -136,10 +135,8 @@
 </style>
 </head>
 <body>
-
 <h1>MEMENTO MORI</h1>
 <p class="sub">WEEKS</p>
-
 <div class="calendar">
   <div class="left-col">
     <div class="years-label" id="yearsLabel">YEARS</div>
@@ -153,17 +150,13 @@
     <div class="grid" id="grid"></div>
   </div>
 </div>
-
 <div class="quote">
   "It's not death a man should fear, but he should fear never beginning to live"
   <cite>— MARCUS AURELIUS</cite>
 </div>
-
 <script>
   const YEARS = 86, WEEKS = 52;
-
-  // Pre-fill DOB 26 July 1997
-  const birthday   = new Date(1997, 6, 26);
+  const birthday = new Date(1997, 6, 26);
   const weeksLived = Math.floor((new Date() - birthday) / (7*24*60*60*1000));
   const filled = Array.from({length: YEARS}, () => new Array(WEEKS).fill(false));
   let n = 0;
@@ -172,17 +165,13 @@
       if (n >= weeksLived) break outer;
       filled[y][w] = true; n++;
     }
-
-  // Load saved state
   try {
     const saved = JSON.parse(localStorage.getItem('mm2') || 'null');
-    if (saved && saved.length === YEARS) {
+    if (saved && saved.length === YEARS)
       for (let y = 0; y < YEARS; y++)
         for (let w = 0; w < WEEKS; w++)
           filled[y][w] = saved[y][w];
-    }
   } catch(e) {}
-
   let saveTimer = null;
   function saveState() {
     clearTimeout(saveTimer);
@@ -190,60 +179,45 @@
       try { localStorage.setItem('mm2', JSON.stringify(filled)); } catch(e) {}
     }, 800);
   }
-
-  // Build cell size: fit 52 cells across available width
   function getCellSize() {
     const available = window.innerWidth - 12*2 - 20 - 3 - 10 - 4;
     const size = Math.floor((available - (WEEKS - 1) * 2) / WEEKS);
-    return Math.max(8, size); // minimum 8px for finger tapping
+    return Math.max(4, Math.min(size, 11));
   }
-
   function build() {
     const CELL = getCellSize();
     const yearNums = document.getElementById('yearNums');
-    const grid     = document.getElementById('grid');
+    const grid = document.getElementById('grid');
     const yearsLabel = document.getElementById('yearsLabel');
-
     yearNums.innerHTML = '';
     grid.innerHTML = '';
-
-    // Set years label height to match grid
     const rowH = CELL + 2;
     yearsLabel.style.height = (YEARS * rowH) + 'px';
-
     for (let y = 0; y < YEARS; y++) {
       const label = y;
-      const show  = label === 0 || label % 5 === 0 || label === YEARS - 1;
-
-      // Year number
+      const show = label === 0 || label % 5 === 0 || label === YEARS - 1;
       const yn = document.createElement('div');
       yn.className = 'yn';
       yn.style.height = rowH + 'px';
       if (show) yn.textContent = label;
       yearNums.appendChild(yn);
-
-      // Row of cells
       const row = document.createElement('div');
       row.className = 'grid-row';
-
       for (let w = 0; w < WEEKS; w++) {
         const cell = document.createElement('div');
         cell.className = 'cell' + (filled[y][w] ? ' filled' : '');
-        cell.style.width  = CELL + 'px';
+        cell.style.width = CELL + 'px';
         cell.style.height = CELL + 'px';
-
         cell.addEventListener('click', () => {
           filled[y][w] = !filled[y][w];
           cell.classList.toggle('filled', filled[y][w]);
           saveState();
         });
-
         row.appendChild(cell);
       }
       grid.appendChild(row);
     }
   }
-
   document.fonts.ready.then(build);
   window.addEventListener('resize', build);
 </script>
