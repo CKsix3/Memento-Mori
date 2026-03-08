@@ -85,6 +85,7 @@
   .week-header {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     margin-bottom: 2px;
     height: 18px;
     align-items: center;
@@ -93,9 +94,6 @@
     font-family: 'Cinzel', serif;
     font-size: 9px;
     color: #bbb;
-  }
-  .wh:last-child {
-    margin-left: auto;
   }
   .grid {
     display: flex;
@@ -146,7 +144,7 @@
     <div class="year-nums" id="yearNums"></div>
   </div>
   <div class="right-col">
-    <div class="week-header">
+    <div class="week-header" id="weekHeader">
       <span class="wh">1</span>
       <span class="wh">52</span>
     </div>
@@ -192,9 +190,12 @@
     const yearNums = document.getElementById('yearNums');
     const grid = document.getElementById('grid');
     const yearsLabel = document.getElementById('yearsLabel');
+    const weekHeader = document.getElementById('weekHeader');
     yearNums.innerHTML = '';
     grid.innerHTML = '';
     const rowH = CELL + 2;
+    const gridWidth = WEEKS * CELL + (WEEKS - 1) * 2;
+    weekHeader.style.width = gridWidth + 'px';
     yearsLabel.style.height = (YEARS * rowH) + 'px';
     for (let y = 0; y < YEARS; y++) {
       const label = y;
